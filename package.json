@@ -10,6 +10,9 @@
   },
   "dependencies": {
     "@eosdacio/ual-wax": "^1.7.0",
+    "@fontsource/cinzel": "^4.5.9",
+    "@fontsource/inter": "^4.5.14",
+    "@fontsource/merriweather": "^4.5.14",
     "next": "13.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
