@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Navbar from './Navbar'
 
-export default function Layout({ children }) {
+export default function Layout({ children, ual }) {
 	return (
 		<>
 			<div className="bg-slate-900 text-white">
@@ -10,7 +10,7 @@ export default function Layout({ children }) {
 					<link rel="icon" href="/favicon.ico" />
 				</Head>
 
-				<Navbar />
+				<Navbar ual={ual} />
 				<main className="">{children}</main>
 			</div>
 		</>

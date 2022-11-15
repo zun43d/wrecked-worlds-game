@@ -1,4 +1,9 @@
 @tailwind base;
+
+html {
+	@apply bg-slate-900;
+}
+
 @tailwind components;
 
 .btn-normal {
