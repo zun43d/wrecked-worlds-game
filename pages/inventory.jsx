@@ -8,6 +8,7 @@ export default function Inventory({ ual }) {
 
 	useEffect(() => {
 		setWalletAddr(ual.activeUser?.accountName)
+		console.log(ual)
 	}, [ual.activeUser])
 
 	const fetcher = (...args) => fetch(...args).then((res) => res.json())
@@ -42,11 +43,11 @@ export default function Inventory({ ual }) {
 										className="bg-slate-900 rounded-lg p-4"
 									>
 										<div className="flex flex-col items-center">
-											<div className="w-52 h-64 sm:w-40 sm:h-52">
+											<div className="w-52 h-52 sm:w-52 sm:h-52 p-3">
 												<Image
 													src={`https://atomichub-ipfs.com/ipfs/${asset.data.img}`}
 													alt={asset.data.name}
-													className="w-full h-full object-cover"
+													className="w-full h-full object-contain"
 													height={370}
 													width={370}
 												/>
