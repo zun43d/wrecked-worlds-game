@@ -8,7 +8,6 @@ export default function Inventory({ ual }) {
 
 	useEffect(() => {
 		setWalletAddr(ual.activeUser?.accountName)
-		console.log(ual)
 	}, [ual.activeUser])
 
 	const fetcher = (...args) => fetch(...args).then((res) => res.json())
