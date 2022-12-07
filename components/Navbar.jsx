@@ -78,7 +78,7 @@ export default function Navbar({ ual }) {
 													alt="Wrecktium icon"
 												/>
 											</span>
-											{wtmBal || '0.0000'}
+											{data && (wtmBal || '0.0000')}
 										</span>
 									</div>
 									<BsChevronDown

@@ -7,13 +7,15 @@ import fetcher from '../utils/fetcher'
 export default function Inventory({ ual }) {
 	const [walletAddr, setWalletAddr] = useState(null)
 
+	const assetsAPI = process.env.NEXT_PUBLIC_ASSET_API_ENDPOINT
+
 	useEffect(() => {
 		setWalletAddr(ual.activeUser?.accountName)
 	}, [ual.activeUser])
 
 	// const fetcher = (...args) => fetch(...args).then((res) => res.json())
 	const { data, error } = useSWR(
-		`https://api.wax-aa.bountyblok.io/atomicassets/v1/assets?collection_name=wreckedwrlds&owner=${walletAddr}&page=1&limit=100&order=desc&sort=asset_id`,
+		`${assetsAPI}/atomicassets/v1/assets?collection_name=wreckedwrlds&owner=${walletAddr}&page=1&limit=100&order=desc&sort=asset_id`,
 		fetcher
 	)
 
