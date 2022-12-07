@@ -16,7 +16,6 @@ export default function Home({ ual }) {
 	}
 
 	useEffect(() => {
-		// ual.isAutoLogin = true
 		setUser(ual.activeUser)
 
 		ual.activeUser && router.push('/inventory')
