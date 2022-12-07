@@ -1,17 +1,27 @@
-import { Fragment } from 'react'
+import { Fragment, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Menu, Transition } from '@headlessui/react'
 import { BsChevronDown } from 'react-icons/bs'
 import { IoIosLogOut } from 'react-icons/io'
 import { useRouter } from 'next/router'
+import useSWR from 'swr'
+import fetcher from '../utils/fetcher'
 
 export default function Navbar({ ual }) {
 	const router = useRouter()
+	const userName = ual.activeUser?.accountName
+
+	const { data, error } = useSWR(
+		`/api/user/balance?wallet=${userName}`,
+		fetcher
+	)
+
+	const wtmBal = data && data[0]
 
 	const handleLogout = () => {
-		ual.logout()
 		router.push('/')
+		ual.logout()
 	}
 
 	return (
@@ -55,10 +65,20 @@ export default function Navbar({ ual }) {
 						<Menu as="div" className="relative inline-block text-left">
 							<div>
 								<Menu.Button className="inline-flex w-full items-center justify-center rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
-									<div className="flex flex-col items-end">
-										<span>Logged in as</span>
+									<div className="flex flex-col items-start">
 										<span className="text-orange-300">
-											{ual.activeUser?.accountName || 'Loading...'}
+											{userName || 'Loading...'}
+										</span>
+										<span className="flex items-center justify-start">
+											<span className="mr-1">
+												<Image
+													src="/wrecktium-ico.png"
+													width="24"
+													height="24"
+													alt="Wrecktium icon"
+												/>
+											</span>
+											{wtmBal || '0.0000'}
 										</span>
 									</div>
 									<BsChevronDown
