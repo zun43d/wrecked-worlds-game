@@ -2,6 +2,7 @@ import '../styles/globals.css'
 import 'regenerator-runtime/runtime'
 import '@fontsource/cinzel/800.css'
 import '@fontsource/merriweather'
+import '@fontsource/inter'
 
 import { UALProvider, withUAL } from 'ual-reactjs-renderer'
 import { Wax } from '@eosdacio/ual-wax'

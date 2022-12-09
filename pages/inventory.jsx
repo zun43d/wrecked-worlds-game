@@ -38,7 +38,7 @@ export default function Inventory({ ual }) {
 								You don&apos;t have any items in your inventory.
 							</p>
 						) : (
-							<div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+							<div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-4">
 								{data?.data.map((asset) => (
 									<div
 										key={asset.asset_id}

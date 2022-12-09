@@ -1,7 +1,8 @@
 import { JsonRpc } from 'eosjs'
 import fetch from 'node-fetch'
 
-const rpc = new JsonRpc('https://testnet.wax.pink.gg', { fetch })
+const api = process.env.NEXT_PUBLIC_API_ENDPOINT
+const rpc = new JsonRpc(api, { fetch })
 // const rpc = new JsonRpc('https://wax.pink.gg/', { fetch })
 
 export default async function handler(req, res) {
@@ -10,30 +11,46 @@ export default async function handler(req, res) {
 		const { wallet } = req.query
 
 		// fetch user data from the blockchain
-		const response = await rpc
 
-			// .get_account(wallet)
-			.get_currency_balance('wrecktiumtok', wallet, 'WTM')
-			// .get_info()
+		const response = await Promise.all([
+			rpc.get_currency_balance('wrecktiumtok', wallet, 'WTM'),
+			rpc.get_table_rows({
+				json: true,
+				code: 'wreckminings',
+				scope: 'wreckminings',
+				table: 'wallets',
+				key_type: 'i64',
+				index_position: 1,
+				table_key: 'wallet', // Lookup key
+				lower_bound: wallet, // NFT author name
+				upper_bound: wallet,
+				limit: 1,
+			}),
+		])
 
-			// .get_table_rows({
-			// 	json: true,
-			// 	code: 'eosio.token',
-			// 	scope: wallet,
-			// 	table: 'accounts',
-			// 	limit: 100,
-			// })
-			.then((result) => {
-				return result
-			})
-			.catch((error) => {
-				console.log(error)
-			})
+		// const response = await rpc
+		// 	.get_currency_balance('wrecktiumtok', wallet, 'WTM')
+		// 	.then((wtm) => {
+		// 		return wtm
+		// 	})
+		// 	.catch((error) => {
+		// 		console.log(error)
+		// 	})
 
-		// const response = await fetch(
-		// 	`https://jsonplaceholder.typicode.com/users/${wallet}`
-		// )
-		const data = await response
-		res.status(200).json(data)
+		const balances = () => {
+			const tokens = []
+			const initGameTok = ['0.0000 IRON', '0.0000 DM', '0.0000 WRM']
+
+			tokens.push(response[0].length > 0 ? response[0][0] : '0.0000 WTM')
+			response[1].rows.length > 0
+				? response[1].rows[0].resource_tokens.forEach((token) =>
+						tokens.push(token)
+				  )
+				: initGameTok.map((tok) => tokens.push(tok))
+
+			return tokens
+		}
+
+		res.status(200).json(balances())
 	}
 }

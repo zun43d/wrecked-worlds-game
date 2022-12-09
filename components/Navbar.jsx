@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Menu, Transition } from '@headlessui/react'
 import { BsChevronDown } from 'react-icons/bs'
+import { CgArrowsExchange } from 'react-icons/cg'
 import { IoIosLogOut } from 'react-icons/io'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
@@ -12,12 +13,15 @@ export default function Navbar({ ual }) {
 	const router = useRouter()
 	const userName = ual.activeUser?.accountName
 
-	const { data, error } = useSWR(
+	const { data: userBal, error } = useSWR(
 		`/api/user/balance?wallet=${userName}`,
 		fetcher
 	)
 
-	const wtmBal = data && data[0]
+	const wtm = userBal ? userBal[0] : '0.0000 WTM'
+	const iron = userBal ? userBal[1] : '0.0000 IRON'
+	const dm = userBal ? userBal[2] : '0.0000 DM'
+	const wrm = userBal ? userBal[3] : '0.0000 WRM'
 
 	const handleLogout = () => {
 		router.push('/')
@@ -26,50 +30,77 @@ export default function Navbar({ ual }) {
 
 	return (
 		<header className="z-50 bg-slate-700 border-b-[1px] border-slate-500">
-			<div className="h-24  mx-auto max-w-7xl sm:max-w-6xl flex justify-center items-center px-5">
-				<nav className="w-full list-none grid grid-flow-col items-center font-bold text-sm font-merriweather">
-					<li className="">
-						<Link
-							href={ual.activeUser ? '/inventory' : '/'}
-							className="flex items-center w-48 sm:w-56"
-						>
-							<Image
-								className="undrag"
-								draggable="false"
-								src="/logo.png"
-								alt="Wrecked Worlds"
-								width={90}
-								height={47.8125}
-							/>
-							<h1 className="hidden sm:block text-lg leading-none font-bold text-white px-5 font-cinzel -ml-4 sm:-ml-2">
+			<div className="h-24  mx-auto max-w-7xl sm:max-w-7xl flex justify-center items-center px-5">
+				<nav className="w-full list-none grid grid-flow-col items-center font-bold text-sm font-sans">
+					<li className="flex items-center gap-4">
+						<div className="mr-7">
+							<Link
+								href={ual.activeUser ? '/inventory' : '/'}
+								className="flex items-center w-max sm:w-max"
+							>
+								<Image
+									className="undrag"
+									draggable="false"
+									src="/logo.png"
+									alt="Wrecked Worlds"
+									width={90}
+									height={47.8125}
+								/>
+								{/* <h1 className="hidden sm:block text-lg leading-none font-bold text-white px-5 font-cinzel -ml-4 sm:-ml-2">
 								Wrecked <br />
 								Worlds
-							</h1>
-						</Link>
+							</h1> */}
+							</Link>
+						</div>
+						<div>
+							<Link
+								href="/inventory"
+								className="btn-normal btn-trans font-semibold px-6 py-3"
+							>
+								Inventory
+							</Link>
+						</div>
+						<div>
+							<Link
+								href="/mine"
+								className="btn-normal btn-trans font-semibold px-6 py-3"
+							>
+								Mine Land
+							</Link>
+						</div>
 					</li>
-					<li>
-						{/* <Link href="/inventory" className="btn-normal">
-							Inventory
-						</Link> */}
-					</li>
-					{/* <li className="ml-auto"> */}
-					{/* <li className=" lg:flex justify-end items-center ml-auto gap-3">
-						<div className="flex flex-col justify-center items-end bg-slate-800/75 pl-10 pr-4 py-2 rounded-xl">
-							<div className="font-normal text-xs">Logged in as</div>
-							<div className="text-orange-300">
-								{ual.activeUser?.accountName || 'Loading...'}
+
+					<div className="font-sans ml-auto flex gap-4 items-center">
+						<div className="btn-trans h-12 gap-6">
+							<div className="flex items-center gap-2">
+								<span className="p-3 rounded-full bg-gray-500"></span>
+								<p>{iron}</p>
+							</div>
+							<div className="flex items-center gap-2">
+								<span className="p-3 rounded-full bg-blue-100"></span>
+								<p>{dm}</p>
+							</div>
+							<div className="flex items-center gap-2">
+								<span className="p-3 rounded-full bg-orange-400"></span>
+								<p>{wrm}</p>
 							</div>
 						</div>
-					</li> */}
-					<div className="font-sans ml-auto">
+
+						<button>
+							<CgArrowsExchange
+								// size={10}
+								className="rounded-md h-11 w-11 p-1.5 btn-colored"
+							/>
+						</button>
+
 						<Menu as="div" className="relative inline-block text-left">
 							<div>
-								<Menu.Button className="inline-flex w-full items-center justify-center rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
+								<Menu.Button className="btn-trans btn-trans-hover">
 									<div className="flex flex-col items-start">
-										<span className="text-orange-300">
+										<span className="text-orange-300 font-medium">
 											{userName || 'Loading...'}
 										</span>
-										<span className="flex items-center justify-start">
+										<span className="flex items-center justify-start w-max font-semibold">
 											<span className="mr-1">
 												<Image
 													src="/wrecktium-ico.png"
@@ -78,7 +109,7 @@ export default function Navbar({ ual }) {
 													alt="Wrecktium icon"
 												/>
 											</span>
-											{data && (wtmBal || '0.0000')}
+											{wtm}
 										</span>
 									</div>
 									<BsChevronDown
@@ -118,20 +149,7 @@ export default function Navbar({ ual }) {
 							</Transition>
 						</Menu>
 					</div>
-					{/* </li> */}
-					{/* <div className="hidden">
-						<div className="menu-chunk"></div>
-						<div className="menu-chunk">
-							<div className="flex flex-col justify-center items-end bg-slate-800/75 pl-10 pr-4 py-2 rounded-xl">
-								<div className="font-normal text-xs">Logged in as</div>
-								<div className="text-orange-300">
-									{ual.activeUser?.accountName || 'Loading...'}
-								</div>
-							</div>
-						</div>
-					</div> */}
 				</nav>
-				{/* Mobile menu */}
 			</div>
 		</header>
 	)
