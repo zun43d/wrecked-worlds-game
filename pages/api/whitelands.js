@@ -21,13 +21,19 @@ export default async function handler(req, res) {
 			limit: 100,
 		})
 
-		const whiteLandNFTs = await Promise.all(
+		const whiteLands = await Promise.all(
 			templateIds.map(async (templateId) =>
 				fetch(
 					`${atomicApi}/atomicassets/v1/assets?collection_name=wreckedwrlds&template_id=${templateId.template_id}&page=1&limit=100&order=desc&sort=asset_id`
 				)
 			)
 		).then(async (res) => Promise.all(res.map(async (r) => await r.json())))
+
+		let whiteLandNFTs = []
+
+		whiteLands.forEach((templateLands) =>
+			templateLands.data.forEach((lands) => whiteLandNFTs.push(lands))
+		)
 
 		// const test = await rpc.get_table_rows({
 		// 	json: true,
