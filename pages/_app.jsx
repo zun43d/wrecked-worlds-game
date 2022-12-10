@@ -22,6 +22,9 @@ const myChain = {
 const wax = new Wax([myChain], { appName: 'My App' })
 const anchor = new Anchor([myChain], { appName: 'My App' })
 
+const authenticators =
+	process.env.NEXT_PUBLIC_ENV == 'prod' ? [wax, anchor] : [anchor]
+
 function MyApp({ Component, pageProps }) {
 	const MyUALConsumer = withUAL(Component)
 
@@ -29,7 +32,7 @@ function MyApp({ Component, pageProps }) {
 	return (
 		<UALProvider
 			chains={[myChain]}
-			authenticators={[wax, anchor]}
+			authenticators={authenticators}
 			appName="My App"
 		>
 			<MyUALConsumer {...pageProps} />
