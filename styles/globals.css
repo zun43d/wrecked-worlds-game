@@ -34,4 +34,8 @@ html {
 	@apply hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75;
 }
 
+.select-card {
+	@apply flex flex-col items-center justify-center cursor-pointer w-52 h-52 sm:w-80 sm:h-96 p-3 bg-slate-800/50 hover:bg-slate-800/80 border border-slate-700 hover:border-slate-600 transition duration-200 rounded-md text-slate-400 text-2xl;
+}
+
 @tailwind utilities;

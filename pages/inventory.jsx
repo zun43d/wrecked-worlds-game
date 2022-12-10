@@ -16,7 +16,7 @@ export default function Inventory({ ual }) {
 	// const fetcher = (...args) => fetch(...args).then((res) => res.json())
 	const { data, error } = useSWR(
 		`${assetsAPI}/atomicassets/v1/assets?collection_name=wreckedwrlds&owner=${walletAddr}&page=1&limit=100&order=desc&sort=asset_id`,
-		fetcher
+		{ fetcher, refreshInterval: 4000 }
 	)
 
 	return (
