@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from 'react'
+import { Fragment, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Menu, Transition } from '@headlessui/react'
@@ -9,9 +9,17 @@ import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import fetcher from '../utils/fetcher'
 
+import Exchange from './Exchange'
+
 export default function Navbar({ ual }) {
 	const router = useRouter()
 	const userName = ual.activeUser?.accountName
+
+	const [isOpen, setIsOpen] = useState(false)
+	const changeOpen = (t) => {
+		setIsOpen(t)
+	}
+	const readOpen = () => isOpen
 
 	const { data: userBal, error } = useSWR(
 		`/api/user/balance?wallet=${userName}`,
@@ -86,10 +94,16 @@ export default function Navbar({ ual }) {
 							</div>
 						</div>
 
-						<button>
+						<button onClick={() => setIsOpen(true)}>
 							<CgArrowsExchange
 								// size={10}
 								className="rounded-md h-11 w-11 p-1.5 btn-colored"
+							/>
+							<Exchange
+								ual={ual}
+								isOpen={readOpen()}
+								setIsOpen={changeOpen}
+								userBal={{ wtm, iron, dm, wrm }}
 							/>
 						</button>
 

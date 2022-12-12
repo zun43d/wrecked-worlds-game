@@ -13,7 +13,7 @@ const myChain = {
 	rpcEndpoints: [
 		{
 			protocol: 'https',
-			host: process.env.NEXT_PUBLIC_API_ENDPOINT, //'wax.dfuse.eosnation.io',
+			host: process.env.NEXT_PUBLIC_API_ENDPOINT.replace('https://', ''), //'wax.dfuse.eosnation.io',
 			port: '',
 		},
 	],

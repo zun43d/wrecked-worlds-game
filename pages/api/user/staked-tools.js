@@ -24,47 +24,38 @@ export default async function handler(req, res) {
 		// const actions = await rpc.history_get_actions(wallet)
 
 		// manual implementation is more flexible
-		const actions = await fetch(
-			`${api}/v2/history/get_actions?account=${admin}&filter=${filter}&skip=${skip}&limit=${limit}&sort=${sort}`
-		).then((res) => res.json())
+		// const actions = await fetch(
+		// 	`${api}/v2/history/get_actions?account=${admin}&filter=${filter}&skip=${skip}&limit=${limit}&sort=${sort}`
+		// ).then((res) => res.json())
 
-		const allStakedAssets = []
+		// const allStakedAssets = []
 
-		actions.actions.map((action) => {
-			if (
-				action.act.data.from === /*wallet*/ 'luposolitari' &&
-				action.act.data.memo === 'stake;tool'
-			)
-				return action.act.data.asset_ids.filter((id) =>
-					allStakedAssets.push(id)
-				)
+		// actions.actions.map((action) => {
+		// 	if (
+		// 		action.act.data.from === /*wallet*/ 'luposolitari' &&
+		// 		action.act.data.memo === 'stake;tool'
+		// 	)
+		// 		return action.act.data.asset_ids.filter((id) =>
+		// 			allStakedAssets.push(id)
+		// 		)
+		// })
+
+		const currentlyStakedIds = await rpc.get_table_rows({
+			json: true,
+			code: 'wreckminings',
+			scope: wallet,
+			table: 'tools',
+			limit: 50,
+			page: 1,
 		})
 
-		const currentlyStakedId = await Promise.all(
-			allStakedAssets.map((id) =>
-				rpc
-					.get_table_rows({
-						json: true,
-						code: 'atomicassets',
-						scope: admin,
-						table: 'assets',
-						lower_bound: id,
-						upper_bound: id,
-						limit: 25,
-					})
-					.then((res) => res.rows[0].asset_id)
-			)
-		)
-
 		const currentlyStakedTools = await Promise.all(
-			currentlyStakedId.map((id) =>
-				fetch(`${atomicApi}/atomicassets/v1/assets/${id}`).then((res) =>
-					res.json()
+			currentlyStakedIds.rows.map((tool) =>
+				fetch(`${atomicApi}/atomicassets/v1/assets/${tool.asset_id}`).then(
+					(res) => res.json()
 				)
 			)
 		).then((resu) => resu.map((data) => data.data))
-
-		// console.log(currentlyStakedTools)
 
 		res.status(200).json(currentlyStakedTools)
 	}
