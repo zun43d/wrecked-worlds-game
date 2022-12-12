@@ -9,7 +9,7 @@ export default async function handler(req, res) {
 	if (req.method === 'GET') {
 		const { wallet } = req.query
 		// const atomicApi = new RpcApi(api, 'atomicassets', { fetcher })
-		const rpc = new JsonRpc(api, fetch)
+		const rpc = new JsonRpc(api, { fetch })
 
 		const { rows: templateIds } = await rpc.get_table_rows({
 			json: true,

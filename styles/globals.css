@@ -35,7 +35,41 @@ html {
 }
 
 .select-card {
-	@apply flex flex-col items-center justify-center cursor-pointer w-52 h-52 sm:w-80 sm:h-96 p-3 bg-slate-800/50 hover:bg-slate-800/80 border border-slate-700 hover:border-slate-600 transition duration-200 rounded-md text-slate-400 text-2xl;
+	@apply flex flex-col items-center justify-center cursor-pointer w-52 h-52 sm:w-72 sm:h-96 p-3 bg-slate-800/50 hover:bg-slate-800/80 border border-slate-700 hover:border-slate-600 transition duration-200 rounded-md text-slate-400 text-2xl;
+}
+
+.modal {
+	@apply text-white fixed w-7/12 min-w-max max-w-5xl h-4/5 bg-slate-800 border border-orange-800 rounded-lg overflow-y-auto;
+	/* top: '50%',
+						left: '50%',
+						transform: 'translate(-50%,-50%)',
+						width: '1100px',
+						height: '800px',
+						borderRadius: '8px',
+						borderColor: '#9a3412',
+						backgroundColor: '#1e293b',
+						color: 'white', */
 }
 
 @tailwind utilities;
+
+.scrollbar::-webkit-scrollbar {
+	@apply w-3 h-3;
+	/* width: 20px; */
+	/* height: 20px; */
+}
+
+.scrollbar::-webkit-scrollbar-track {
+	@apply rounded-full;
+	/* background: #f7f4ed; */
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+	@apply bg-slate-900 rounded-full;
+	/* border-radius: 100vh; */
+	/* border: 3px solid #f6f7ed; */
+}
+
+.scrollbar::-webkit-scrollbar-thumb:hover {
+	@apply bg-slate-900/70;
+}
