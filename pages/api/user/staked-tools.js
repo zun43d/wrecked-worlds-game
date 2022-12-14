@@ -6,19 +6,18 @@ const api =
 		? 'https://testnet.waxsweden.org'
 		: 'https://api.waxsweden.org'
 
+const rpc = new JsonRpc(api, { fetch })
 const atomicApi = process.env.NEXT_PUBLIC_ASSET_API_ENDPOINT
 
 export default async function handler(req, res) {
 	if (req.method === 'GET') {
 		const { wallet } = req.query
 
-		const admin = 'wreckminings'
-		const filter = 'atomicassets:transfer'
-		const skip = 0
-		const limit = 100
-		const sort = 'desc'
-
-		const rpc = new JsonRpc(api, { fetch })
+		// const admin = 'wreckminings'
+		// const filter = 'atomicassets:transfer'
+		// const skip = 0
+		// const limit = 100
+		// const sort = 'desc'
 
 		// Below implementation has less filtering options
 		// const actions = await rpc.history_get_actions(wallet)
@@ -40,7 +39,7 @@ export default async function handler(req, res) {
 		// 		)
 		// })
 
-		const currentlyStakedIds = await rpc.get_table_rows({
+		const { rows: stakedAssets } = await rpc.get_table_rows({
 			json: true,
 			code: 'wreckminings',
 			scope: wallet,
@@ -49,14 +48,12 @@ export default async function handler(req, res) {
 			page: 1,
 		})
 
-		const currentlyStakedTools = await Promise.all(
-			currentlyStakedIds.rows.map((tool) =>
-				fetch(`${atomicApi}/atomicassets/v1/assets/${tool.asset_id}`).then(
-					(res) => res.json()
-				)
-			)
-		).then((resu) => resu.map((data) => data.data))
+		const stakedAssetIds = stakedAssets.map((tool) => tool.asset_id).join('%2C')
 
-		res.status(200).json(currentlyStakedTools)
+		const { data: stakedTools } = await fetch(
+			`${atomicApi}/atomicassets/v1/assets?ids=${stakedAssetIds}&page=1&limit=100&order=desc&sort=updated`
+		).then((res) => res.json())
+
+		res.status(200).json(stakedTools)
 	}
 }

@@ -23,7 +23,7 @@ export default async function handler(req, res) {
 
 		const assetIds = assets.map((id) => id.asset_id).join('%2C')
 		const { data: lands } = await fetch(
-			`${atomicApi}/atomicassets/v1/assets?ids=1099546381689%2C1099546381690&page=1&limit=100&order=desc&sort=updated`
+			`${atomicApi}/atomicassets/v1/assets?ids=${assetIds}&page=1&limit=100&order=desc&sort=updated`
 		).then((res) => res.json())
 
 		// let whiteLandNFTs = []
