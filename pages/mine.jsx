@@ -68,7 +68,7 @@ export default function Mine({ ual }) {
 			return (
 				<div
 					key={land.asset_id}
-					className="w-72 h-[400px] flex flex-col items-center justify-evenly bg-slate-700 hover:shadow-xl hover:scale-[1.0095] hover:-translate-y-1 duration-200 rounded-md cursor-pointer"
+					className="w-72 h-[400px] flex flex-col items-center justify-evenly bg-slate-700 hover:shadow-xl hover:scale-[1.0095] hover:-translate-y-1 duration-200 rounded-lg cursor-pointer"
 					onClick={() => onSelect(land, 'land')}
 				>
 					<div className="mx-auto object-contain">
@@ -93,7 +93,7 @@ export default function Mine({ ual }) {
 			return (
 				<div
 					key={tool.asset_id}
-					className="w-72 h-96 flex flex-col items-center justify-evenly bg-slate-700 hover:shadow-xl hover:scale-[1.0095] hover:-translate-y-1 duration-200 rounded-md cursor-pointer"
+					className="w-72 h-96 flex flex-col items-center justify-evenly bg-slate-700 hover:shadow-xl hover:scale-[1.0095] hover:-translate-y-1 duration-200 rounded-lg cursor-pointer"
 					onClick={() => onSelect(tool, 'tool')}
 				>
 					<div className="mx-auto object-contain">
