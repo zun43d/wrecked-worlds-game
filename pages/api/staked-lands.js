@@ -11,29 +11,26 @@ export default async function handler(req, res) {
 		// const atomicApi = new RpcApi(api, 'atomicassets', { fetcher })
 		const rpc = new JsonRpc(api, { fetch })
 
-		const { rows: templateIds } = await rpc.get_table_rows({
+		const { rows: assets } = await rpc.get_table_rows({
 			json: true,
 			code: 'wreckminings',
 			scope: 'wreckminings',
-			table: 'whitelands',
+			table: 'lands',
 			key_type: 'i64',
 			index_position: 1,
 			limit: 100,
 		})
 
-		const whiteLands = await Promise.all(
-			templateIds.map(async (templateId) =>
-				fetch(
-					`${atomicApi}/atomicassets/v1/assets?collection_name=wreckedwrlds&template_id=${templateId.template_id}&page=1&limit=100&order=desc&sort=asset_id`
-				)
-			)
-		).then(async (res) => Promise.all(res.map(async (r) => await r.json())))
+		const assetIds = assets.map((id) => id.asset_id).join('%2C')
+		const { data: lands } = await fetch(
+			`${atomicApi}/atomicassets/v1/assets?ids=1099546381689%2C1099546381690&page=1&limit=100&order=desc&sort=updated`
+		).then((res) => res.json())
 
-		let whiteLandNFTs = []
+		// let whiteLandNFTs = []
 
-		whiteLands.forEach((templateLands) =>
-			templateLands.data.forEach((lands) => whiteLandNFTs.push(lands))
-		)
+		// whiteLands.forEach((templateLands) =>
+		// 	templateLands.data.forEach((lands) => whiteLandNFTs.push(lands))
+		// )
 
 		// const test = await rpc.get_table_rows({
 		// 	json: true,
@@ -48,7 +45,7 @@ export default async function handler(req, res) {
 		// 	limit: 100,
 		// })
 
-		// res.status(200).json(result.rows)
-		res.status(200).json([templateIds, whiteLandNFTs])
+		res.status(200).json(lands)
+		// res.status(200).json([templateIds, whiteLandNFTs])
 	}
 }

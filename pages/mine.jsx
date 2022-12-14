@@ -18,7 +18,7 @@ export default function Mine({ ual }) {
 
 	const [isMining, setIsMining] = useState(false)
 
-	const { data: whiteLands } = useSWR('/api/whitelands', fetcher)
+	const { data: stakedLands } = useSWR('/api/staked-lands', fetcher)
 	const { data: stakedTools } = useSWR(
 		`/api/user/staked-tools?wallet=${ual.activeUser?.accountName}`,
 		fetcher
@@ -33,19 +33,23 @@ export default function Mine({ ual }) {
 
 	const handleMine = async (activeUser, landAssetId, toolAssetId) => {
 		setIsMining(true)
-		const response = await mine(activeUser, landAssetId, toolAssetId)
+		await mine(activeUser, landAssetId, toolAssetId)
+			.then((res) => {
+				setIsMining(false)
 
-		if (response) {
-			setIsMining(false)
-		}
+				if (res.message) {
+					return alert(res.message)
+				}
 
-		if (response?.error) {
-			return alert(response.error.details[0].message)
-		}
-
-		return alert(
-			'\nMining Success!!\n\nReceived Rewards\n- 1.0000 IRON\n- 1.0000 DM\n- 1.0000 WRM'
-		)
+				res.transactionId &&
+					alert(
+						'\nMining Success!!\n\nReceived Rewards\n- 150.0000 IRON\n- 50.0000 DM\n- 10.0000 WRM'
+					)
+			})
+			.catch((err) => {
+				setIsMining(false)
+				alert('Something went wrong!')
+			})
 	}
 
 	const handleSelect = (nft, type) => {
@@ -59,23 +63,24 @@ export default function Mine({ ual }) {
 	}
 
 	const LandCard = ({ onSelect }) => {
-		return whiteLands[1].map((land) => {
+		return stakedLands.map((land) => {
 			const landName = land.template.immutable_data.name
 			return (
 				<div
 					key={land.asset_id}
-					className="flex-col items-center bg-slate-700 py-3 hover:shadow-xl hover:scale-[1.0095] hover:-translate-y-1 duration-200 rounded-md w-72 h-96 cursor-pointer"
+					className="w-72 h-[400px] flex flex-col items-center justify-evenly bg-slate-700 hover:shadow-xl hover:scale-[1.0095] hover:-translate-y-1 duration-200 rounded-md cursor-pointer"
 					onClick={() => onSelect(land, 'land')}
 				>
-					<div className=" w-[264px] h-[311px] overflow-hidden mx-auto object-contain">
+					<div className="mx-auto object-contain">
 						<Image
 							src={getImage(land)}
 							alt={landName ? landName : 'No Name'}
 							width={264}
 							height={264}
+							className="px-5"
 						/>
 					</div>
-					<p className="text-center pt-3">{landName ? landName : 'No Name'}</p>
+					<p className="text-center">{landName ? landName : 'No Name'}</p>
 				</div>
 			)
 		})
@@ -122,13 +127,13 @@ export default function Mine({ ual }) {
 							<h3 className="text-center text-orange-300 w-full border-b border-b-slate-700 py-3">
 								Selected Land
 							</h3>
-							<div className="mx-auto flex items-center justify-center h-full pt-3">
+							<div className="mx-auto flex items-center justify-center h-80 pt-3">
 								<Image
 									src={getImage(currentLand)}
 									alt={currentLand.template.immutable_data.name}
-									width={264}
-									height={264}
-									className="px-2"
+									height={288}
+									width={288}
+									className="px-2 h-full w-full object-contain"
 								/>
 							</div>
 							<p className="text-center pt-2 pb-4 text-base">
@@ -154,13 +159,13 @@ export default function Mine({ ual }) {
 							<h3 className="text-center text-orange-300 w-full border-b border-b-slate-700 py-3">
 								Current Tool
 							</h3>
-							<div className="mx-auto flex items-center justify-center h-full pt-3">
+							<div className="mx-auto flex items-center justify-center h-80 pt-3">
 								<Image
 									src={getImage(currentTool)}
 									alt={currentTool.template.immutable_data.name}
 									width={264}
 									height={264}
-									className="px-2"
+									className="px-2 w-full h-full object-contain"
 								/>
 							</div>
 							<p className="text-center pt-2 pb-4 text-base">
@@ -222,7 +227,7 @@ export default function Mine({ ual }) {
 					Choose a land
 				</h3>
 				<div className="grid grid-cols-3 items-center justify-items-center gap-y-8 gap-x-2 mx-10 my-16">
-					{whiteLands ? (
+					{stakedLands ? (
 						<LandCard onSelect={handleSelect} />
 					) : (
 						<p>No lands available</p>

@@ -99,13 +99,13 @@ export default function Navbar({ ual }) {
 								// size={10}
 								className="rounded-md h-11 w-11 p-1.5 btn-colored"
 							/>
-							<Exchange
-								ual={ual}
-								isOpen={readOpen()}
-								setIsOpen={changeOpen}
-								userBal={{ wtm, iron, dm, wrm }}
-							/>
 						</button>
+						<Exchange
+							ual={ual}
+							isOpen={readOpen()}
+							setIsOpen={changeOpen}
+							userBal={{ wtm, iron, dm, wrm }}
+						/>
 
 						<Menu as="div" className="relative inline-block text-left">
 							<div>
