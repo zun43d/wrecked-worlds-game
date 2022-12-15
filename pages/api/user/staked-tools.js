@@ -51,7 +51,7 @@ export default async function handler(req, res) {
 		const stakedAssetIds = stakedAssets.map((tool) => tool.asset_id).join('%2C')
 
 		const { data: stakedTools } = await fetch(
-			`${atomicApi}/atomicassets/v1/assets?ids=${stakedAssetIds}&page=1&limit=100&order=desc&sort=updated`
+			`${atomicApi}/atomicassets/v1/assets?collection_name=wreckedwrlds&ids=${stakedAssetIds}&page=1&limit=100&order=desc&sort=updated`
 		).then((res) => res.json())
 
 		res.status(200).json(stakedTools)
