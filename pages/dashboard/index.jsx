@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
-import Layout from '../components/layout'
+import Layout from '../../components/layout'
 import useSWR from 'swr'
 import Image from 'next/image'
-import fetcher from '../utils/fetcher'
-import stake from '../lib/stake'
+import fetcher from '../../utils/fetcher'
+import stake from '../../lib/stake'
 
 export default function Inventory({ ual }) {
 	const [walletAddr, setWalletAddr] = useState(null)

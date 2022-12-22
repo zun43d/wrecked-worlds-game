@@ -1,3 +1,5 @@
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 import Head from 'next/head'
 import Image from 'next/image'
 import Navbar from './Navbar'
@@ -15,6 +17,7 @@ import dockArea from '../public/dock-area.png'
 import dockIconBg from '../public/dock-icon-bg.png'
 
 export default function Layout({ children, ual }) {
+	const router = useRouter()
 	const userName = ual.activeUser?.accountName
 
 	const { data: userBal, error } = useSWR(
@@ -29,6 +32,11 @@ export default function Layout({ children, ual }) {
 		wrm: userBal ? userBal[3].split(' ')[0] : '0.0000 WRM',
 	}
 
+	const handleLogout = () => {
+		router.push('/')
+		ual.logout()
+	}
+
 	return (
 		<>
 			<div className="bg-main text-white h-screen w-screen">
@@ -38,7 +46,7 @@ export default function Layout({ children, ual }) {
 				</Head>
 
 				{/* <Navbar ual={ual} /> */}
-				<main className="bg-slate-900/40 h-full w-full relative">
+				<div className="bg-slate-900/40 h-full w-full relative">
 					<div className="absolute top-16 left-20">
 						<div>
 							<Image
@@ -49,7 +57,10 @@ export default function Layout({ children, ual }) {
 						</div>
 						<div className="absolute left-40 top-6 space-y-3">
 							<h2 className="text-2xl font-cinzel">{userName}</h2>
-							<button className="px-6 py-2 bg-orange-500 border border-orange-400 font-cinzel text-sm">
+							<button
+								className="px-6 py-2 bg-orange-500 border border-orange-400 font-cinzel text-sm"
+								onClick={handleLogout}
+							>
 								Log Out
 							</button>
 						</div>
@@ -107,7 +118,7 @@ export default function Layout({ children, ual }) {
 					<div className="absolute bottom-14 left-0 right-0 flex justify-center items-center">
 						<Image src={dockArea} alt="Dock Area" placeholder="blur" />
 						<div className="absolute left-1/2 -translate-x-1/2 flex gap-9">
-							<div className="">
+							<Link href="/dashboard/mine" className="">
 								<div className="relative">
 									<Image
 										src={dockIconBg}
@@ -121,8 +132,8 @@ export default function Layout({ children, ual }) {
 									/>
 								</div>
 								<p className="font-cinzel text-center">Mine</p>
-							</div>
-							<div className="">
+							</Link>
+							<button className="">
 								<div className="relative">
 									<Image
 										src={dockIconBg}
@@ -136,8 +147,8 @@ export default function Layout({ children, ual }) {
 									/>
 								</div>
 								<p className="font-cinzel text-center">Inventory</p>
-							</div>
-							<div className="relative">
+							</button>
+							<button className="relative">
 								<div className="relative">
 									<Image
 										src={dockIconBg}
@@ -151,8 +162,8 @@ export default function Layout({ children, ual }) {
 									/>
 								</div>
 								<p className="font-cinzel text-center">Craft</p>
-							</div>
-							<div className="relative">
+							</button>
+							<button className="relative">
 								<div className="relative">
 									<Image
 										src={dockIconBg}
@@ -166,10 +177,12 @@ export default function Layout({ children, ual }) {
 									/>
 								</div>
 								<p className="font-cinzel text-center">Leaders</p>
-							</div>
+							</button>
 						</div>
 					</div>
-				</main>
+				</div>
+
+				<main>{children}</main>
 			</div>
 		</>
 	)
