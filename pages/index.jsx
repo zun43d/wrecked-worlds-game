@@ -73,7 +73,7 @@ export default function Home({ ual }) {
 									<p className="link mb-8 font-merriweather">
 										Logged in as {ual.activeUser?.accountName}
 									</p>
-									<p className="">Redirecting to inventory...</p>
+									<p className="">Redirecting to dashboard...</p>
 								</>
 							)}
 							<a

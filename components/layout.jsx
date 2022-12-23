@@ -133,7 +133,7 @@ export default function Layout({ children, ual }) {
 								</div>
 								<p className="font-cinzel text-center">Mine</p>
 							</Link>
-							<button className="">
+							<Link href="/dashboard/inventory" className="">
 								<div className="relative">
 									<Image
 										src={dockIconBg}
@@ -147,7 +147,7 @@ export default function Layout({ children, ual }) {
 									/>
 								</div>
 								<p className="font-cinzel text-center">Inventory</p>
-							</button>
+							</Link>
 							<button className="relative">
 								<div className="relative">
 									<Image

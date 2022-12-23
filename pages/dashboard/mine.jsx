@@ -1,9 +1,14 @@
 import { useState } from 'react'
 import Image from 'next/image'
+import useSWR from 'swr'
 import { BsPlusCircleDotted } from 'react-icons/bs'
 import { GiWarPick } from 'react-icons/gi'
+import fetcher from '../../utils/fetcher'
 import Layout from '../../components/layout'
 import Window from '../../components/Window'
+import { getImage } from '../../utils/getImage'
+import CardSelect from '../../components/modals/CardSelect'
+import mine from '../../lib/mine'
 
 export default function Mine({ ual }) {
 	const [landModalIsOpen, setLandModalIsOpen] = useState(false)
@@ -13,6 +18,12 @@ export default function Mine({ ual }) {
 	const [currentTool, setCurrentTool] = useState(null)
 
 	const [isMining, setIsMining] = useState(false)
+
+	const { data: stakedLands } = useSWR('/api/staked-lands', fetcher)
+	const { data: stakedTools } = useSWR(
+		`/api/user/staked-tools?wallet=${ual.activeUser?.accountName}`,
+		fetcher
+	)
 
 	const handleMine = async (activeUser, landAssetId, toolAssetId) => {
 		setIsMining(true)
@@ -35,16 +46,19 @@ export default function Mine({ ual }) {
 			})
 	}
 
-	const getImage = (nft) => {
-		const imgId = nft.template.immutable_data.img
-		const ipfsAddr = process.env.NEXT_PUBLIC_ASSET_IMAGE_ENDPOINT
-
-		return `${ipfsAddr}/${imgId}`
+	const onSelect = (nft, type) => {
+		if (type == 'land') {
+			setCurrentLand(nft)
+			setLandModalIsOpen(false)
+		} else {
+			setCurrentTool(nft)
+			setToolModalIsOpen(false)
+		}
 	}
 
 	return (
 		<Layout ual={ual}>
-			<Window ual={ual} windowName="Mining">
+			<Window windowName="Mining">
 				<div className="flex flex-col items-center justify-center my-16">
 					<div className="flex items-center justify-cente gap-8 mb-10">
 						{currentLand ? (
@@ -52,7 +66,7 @@ export default function Mine({ ual }) {
 								className="select-card h-[442px] p-0 justify-between"
 								onClick={() => setLandModalIsOpen(true)}
 							>
-								<h3 className="text-center text-orange-300 w-full border-b border-b-slate-700 py-3">
+								<h3 className="text-center text-orange-300 w-full border-b border-b-amber-700 py-3">
 									Selected Land
 								</h3>
 								<div className="mx-auto flex items-center justify-center h-80 pt-3">
@@ -84,7 +98,7 @@ export default function Mine({ ual }) {
 								className="select-card h-[442px] p-0 justify-between"
 								onClick={() => setToolModalIsOpen(true)}
 							>
-								<h3 className="text-center text-orange-300 w-full border-b border-b-slate-700 py-3">
+								<h3 className="text-center text-orange-300 w-full border-b border-b-amber-700 py-3">
 									Current Tool
 								</h3>
 								<div className="mx-auto flex items-center justify-center h-80 pt-3">
@@ -114,11 +128,9 @@ export default function Mine({ ual }) {
 					</div>
 
 					<button
-						className={`${
-							!(currentLand && currentTool) && 'disabled'
-						} btn-colored ${
+						className={`${!(currentLand && currentTool) && 'disabled'} ${
 							!isMining && 'border'
-						} border-amber-400 bg-slate-800/60 hover:bg-slate-800`}
+						} border-orange-400 bg-amber-800/80 hover:bg-amber-800 px-6 py-2 cursor-pointer`}
 						disabled={!(currentLand && currentTool) || isMining}
 						onClick={() =>
 							handleMine(
@@ -132,6 +144,22 @@ export default function Mine({ ual }) {
 					</button>
 				</div>
 			</Window>
+
+			<CardSelect
+				modalIsOpen={landModalIsOpen}
+				setModalIsOpen={setLandModalIsOpen}
+				onSelect={onSelect}
+				nfts={stakedLands}
+				type="land"
+			/>
+
+			<CardSelect
+				modalIsOpen={toolModalIsOpen}
+				setModalIsOpen={setToolModalIsOpen}
+				onSelect={onSelect}
+				nfts={stakedTools}
+				type="tool"
+			/>
 		</Layout>
 	)
 }
