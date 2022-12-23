@@ -39,7 +39,7 @@ html {
 }
 
 .modal {
-	@apply text-white fixed w-7/12 min-w-max max-w-5xl h-4/5 bg-slate-800 border border-orange-800 rounded-lg overflow-y-auto;
+	@apply text-white fixed w-7/12 min-w-max max-w-5xl h-4/5 bg-black/60 overflow-y-auto;
 	/* top: '50%',
 						left: '50%',
 						transform: 'translate(-50%,-50%)',
@@ -58,7 +58,7 @@ html {
 }
 
 .scrollbar::-webkit-scrollbar {
-	@apply w-3 h-3;
+	@apply w-0 h-3;
 	/* width: 20px; */
 	/* height: 20px; */
 }
@@ -69,11 +69,11 @@ html {
 }
 
 .scrollbar::-webkit-scrollbar-thumb {
-	@apply bg-slate-900 rounded-full;
+	@apply bg-amber-900 rounded-full mx-1 w-4;
 	/* border-radius: 100vh; */
 	/* border: 3px solid #f6f7ed; */
 }
 
 .scrollbar::-webkit-scrollbar-thumb:hover {
-	@apply bg-slate-900/70;
+	@apply bg-amber-800/70;
 }
