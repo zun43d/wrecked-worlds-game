@@ -11,13 +11,12 @@ export default function Inventory({ ual }) {
 
 	const assetsAPI = process.env.NEXT_PUBLIC_ASSET_API_ENDPOINT
 
-	const {
-		data: { data: inventory },
-		error,
-	} = useSWR(
+	const { data, error } = useSWR(
 		`${assetsAPI}/atomicassets/v1/assets?collection_name=wreckedwrlds&owner=${userName}&page=1&limit=100&order=desc&sort=asset_id`,
 		{ fetcher }
 	)
+
+	const inventory = data?.data || []
 
 	const handleStake = async (assetId) =>
 		await stake(ual.activeUser, assetId).then()
@@ -26,7 +25,7 @@ export default function Inventory({ ual }) {
 		<Layout ual={ual}>
 			<Window windowName="Inventory">
 				<div className="my-10 mx-16 py-5 h-[580px] overflow-x-hidden overflow-y-scroll scrollbar">
-					<div className="grid grid-cols-4 gap-4">
+					<div className="grid grid-cols-4 gap-4 w-full h-full">
 						{inventory.length > 0 ? (
 							inventory.map((item) => (
 								<div
@@ -61,7 +60,7 @@ export default function Inventory({ ual }) {
 								</div>
 							))
 						) : (
-							<p className="text-slate-400 text-center mt-3">
+							<p className="col-span-4 text-orange-300 text-center mt-3 flex items-center justify-center">
 								You have no items in your inventory.
 							</p>
 						)}
