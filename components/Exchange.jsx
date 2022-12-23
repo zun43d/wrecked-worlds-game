@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import ReactModal from 'react-modal'
 import exchange from '../lib/exchange'
 
@@ -6,9 +6,24 @@ export default function Exchange({ ual, isOpen, setIsOpen, userBal }) {
 	const [resources, setResources] = useState([0.0, 0.0, 0.0])
 	const [withdrawWtm, setWithdrawWtm] = useState(0.0)
 
+	// useEffect(() => {
+	// 	// calcCost()
+	// 	// if (withdrawWtm > calcMaxWtm()) setMaxWtm()
+	// 	return () => {
+	// 		setWithdrawWtm(0.0)
+	// 		setResources([0.0, 0.0, 0.0])
+	// 	}
+	// }, [withdrawWtm])
+
 	function toFixed(num, fixed) {
 		var re = new RegExp('^-?\\d+(?:.\\d{0,' + (fixed || -1) + '})?')
 		return num.toString().match(re)[0]
+	}
+
+	const handleWithdrawAmnt = (amount) => {
+		if (amount > +calcMaxWtm()) return setMaxWtm()
+		setWithdrawWtm(amount)
+		calcCost(amount)
 	}
 
 	const calcCost = (amount) => {
@@ -21,11 +36,15 @@ export default function Exchange({ ual, isOpen, setIsOpen, userBal }) {
 		setResources([+iron, +dm, +wrm])
 	}
 
-	const maxWtm = () => {
+	const setMaxWtm = () => {
 		const wtm = toFixed(userBal.iron.replace(' IRON', '') / 150, 4)
 
 		setWithdrawWtm(wtm)
 		calcCost(wtm)
+	}
+
+	const calcMaxWtm = () => {
+		return toFixed(userBal.iron.replace(' IRON', '') / 150, 4)
 	}
 
 	const handleExchange = async () => {
@@ -91,16 +110,17 @@ export default function Exchange({ ual, isOpen, setIsOpen, userBal }) {
 							placeholder="Enter WTM amount..."
 							className="w-96 bg-slate-900 rounded-md py-3 px-4 mt-2"
 							min="1"
-							max={maxWtm}
+							max={setMaxWtm}
 							value={withdrawWtm}
 							onChange={(e) => {
-								setWithdrawWtm(e.target.value)
-								calcCost()
+								handleWithdrawAmnt(e.target.value)
+								// setWithdrawWtm(e.target.value)
+								// calcCost()
 							}}
 						/>
 						<button
 							className="btn-colored border border-orange-900 rounded-md ml-2"
-							onClick={maxWtm}
+							onClick={setMaxWtm}
 						>
 							Max
 						</button>

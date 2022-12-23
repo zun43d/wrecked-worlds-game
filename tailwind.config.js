@@ -18,6 +18,9 @@ module.exports = {
 				],
 				cinzel: ['Cinzel', 'Inter', ...defaultTheme.fontFamily.sans],
 			},
+			backgroundImage: {
+				main: "url('/wrecked-worlds-bg.png')",
+			},
 		},
 	},
 	plugins: [],
