@@ -109,9 +109,12 @@ export default function Layout({ children, ual }) {
 								</p>
 							</div>
 						</div>
-						<button className="absolute top-1/2 -translate-y-1/2 right-8 bg-orange-500 px-1 py-1 border border-orange-400">
+						<Link
+							href="/dashboard/exchange"
+							className="absolute top-1/2 -translate-y-1/2 right-8 bg-orange-500 px-1 py-1 border border-orange-400"
+						>
 							<CgArrowsExchange className="text-white" size={25} />
-						</button>
+						</Link>
 					</div>
 
 					{/* Bottom dock */}
