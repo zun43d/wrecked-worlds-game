@@ -1,15 +1,21 @@
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import ReactModal from 'react-modal'
+import unstakeTool from '../../lib/unstakeTool'
 import { getImage } from '../../utils/getImage'
 
 export default function CardSelect({
+	ual,
+	mutate,
 	modalIsOpen,
 	setModalIsOpen,
 	onSelect,
 	nfts,
 	type,
 }) {
+	const handleUnstake = async (assetId) =>
+		await unstakeTool(ual.activeUser, [assetId]).then(() => mutate())
+
 	return (
 		<ReactModal
 			isOpen={modalIsOpen}
@@ -47,10 +53,10 @@ export default function CardSelect({
 						return (
 							<div
 								key={nft.asset_id}
-								className="w-72 h-[400px] flex flex-col items-center justify-evenly bg-gray-700/40 hover:shadow-xl hover:scale-[1.0095] hover:-translate-y-1 duration-200 rounded-lg cursor-pointer"
+								className="w-72 flex flex-col items-center justify-between bg-gray-700/40 hover:shadow-xl hover:scale-[1.0095] hover:-translate-y-1 duration-200 rounded-lg cursor-pointer"
 								onClick={() => onSelect(nft, type)}
 							>
-								<div className="mx-auto object-contain">
+								<div className="mx-auto object-contain py-5">
 									<Image
 										src={img}
 										alt={name}
@@ -59,7 +65,21 @@ export default function CardSelect({
 										className="px-5"
 									/>
 								</div>
-								<p className="text-center">{name ? name : 'No Name'}</p>
+								<div
+									className={`flex items-center ${
+										type === 'tool' ? 'justify-between' : 'justify-center'
+									} w-full px-5 py-5`}
+								>
+									<p className="text-center">{name ? name : 'No Name'}</p>
+									{type === 'tool' && (
+										<button
+											className="btn-colored rounded-lg py-2 px-4 text-sm z-10"
+											onClick={() => handleUnstake(nft.asset_id)}
+										>
+											Unstake
+										</button>
+									)}
+								</div>
 							</div>
 						)
 					})

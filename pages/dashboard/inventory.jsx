@@ -1,5 +1,6 @@
+import { useEffect } from 'react'
 import Image from 'next/image'
-import useSWR from 'swr'
+import useSWR, { useSWRConfig } from 'swr'
 import Layout from '../../components/layout'
 import Window from '../../components/Window'
 import stake from '../../lib/stake'
@@ -7,6 +8,12 @@ import fetcher from '../../utils/fetcher'
 import { getImage } from '../../utils/getImage'
 
 export default function Inventory({ ual }) {
+	const { mutate } = useSWRConfig()
+
+	useEffect(() => {
+		mutate()
+	}, [])
+
 	const userName = ual.activeUser?.accountName
 
 	const assetsAPI = process.env.NEXT_PUBLIC_ASSET_API_ENDPOINT
@@ -19,7 +26,11 @@ export default function Inventory({ ual }) {
 	const inventory = data?.data || []
 
 	const handleStake = async (assetId) =>
-		await stake(ual.activeUser, assetId).then()
+		await stake(ual.activeUser, assetId).then(() =>
+			mutate(
+				`${assetsAPI}/atomicassets/v1/assets?collection_name=wreckedwrlds&owner=${userName}&page=1&limit=100&order=desc&sort=asset_id`
+			)
+		)
 
 	return (
 		<Layout ual={ual}>

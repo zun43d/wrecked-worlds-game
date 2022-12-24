@@ -1,28 +1,6 @@
-import { useEffect, useState } from 'react'
 import Layout from '../../components/layout'
-import useSWR from 'swr'
-import Image from 'next/image'
-import fetcher from '../../utils/fetcher'
-import stake from '../../lib/stake'
 
 export default function Inventory({ ual }) {
-	const [walletAddr, setWalletAddr] = useState(null)
-
-	const assetsAPI = process.env.NEXT_PUBLIC_ASSET_API_ENDPOINT
-
-	useEffect(() => {
-		setWalletAddr(ual.activeUser?.accountName)
-	}, [ual.activeUser])
-
-	// const fetcher = (...args) => fetch(...args).then((res) => res.json())
-	const { data, error } = useSWR(
-		`${assetsAPI}/atomicassets/v1/assets?collection_name=wreckedwrlds&owner=${walletAddr}&page=1&limit=100&order=desc&sort=asset_id`,
-		{ fetcher }
-	)
-
-	const handleStake = async (assetId) =>
-		await stake(ual.activeUser, assetId).then()
-
 	return <Layout ual={ual} />
 
 	// return (

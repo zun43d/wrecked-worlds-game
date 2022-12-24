@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Image from 'next/image'
-import useSWR from 'swr'
+import useSWR, { useSWRConfig } from 'swr'
 import { BsPlusCircleDotted } from 'react-icons/bs'
 import { GiWarPick } from 'react-icons/gi'
 import fetcher from '../../utils/fetcher'
@@ -11,6 +11,8 @@ import CardSelect from '../../components/modals/CardSelect'
 import mine from '../../lib/mine'
 
 export default function Mine({ ual }) {
+	const { mutate } = useSWRConfig()
+
 	const [landModalIsOpen, setLandModalIsOpen] = useState(false)
 	const [currentLand, setCurrentLand] = useState(null)
 
@@ -154,6 +156,8 @@ export default function Mine({ ual }) {
 			/>
 
 			<CardSelect
+				ual={ual}
+				mutate={mutate}
 				modalIsOpen={toolModalIsOpen}
 				setModalIsOpen={setToolModalIsOpen}
 				onSelect={onSelect}
