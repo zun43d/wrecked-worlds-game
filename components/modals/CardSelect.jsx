@@ -46,7 +46,7 @@ export default function CardSelect({
 			</div>
 
 			<div className="grid grid-cols-3 items-center justify-items-center gap-y-8 mx-10">
-				{nfts ? (
+				{nfts.length > 0 ? (
 					nfts.map((nft) => {
 						const img = getImage(nft)
 						const name = nft.template.immutable_data.name
@@ -86,7 +86,7 @@ export default function CardSelect({
 				) : type === 'land' ? (
 					<p className="text-center">No lands available.</p>
 				) : (
-					<p className="text-center">
+					<p className="text-center col-span-3 h-full flex items-center justify-center">
 						Looks like you don&apos;t have any staked tool!
 					</p>
 				)}
