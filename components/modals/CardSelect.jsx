@@ -46,7 +46,7 @@ export default function CardSelect({
 			</div>
 
 			<div className="grid grid-cols-3 items-center justify-items-center gap-y-8 mx-10">
-				{nfts.length > 0 ? (
+				{nfts?.length > 0 ? (
 					nfts.map((nft) => {
 						const img = getImage(nft)
 						const name = nft.template.immutable_data.name
