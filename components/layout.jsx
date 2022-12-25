@@ -80,7 +80,10 @@ export default function Layout({ children, ual }) {
 								</p>
 							</div>
 						</div>
-						<button className="disabled absolute top-1/2 -translate-y-1/2 right-6 px-2 py-0 bg-orange-500 border border-orange-400 text-lg">
+						<button
+							title="Coming soon"
+							className="disabled absolute top-1/2 -translate-y-1/2 right-6 px-2 py-0 bg-orange-500 border border-orange-400 text-lg"
+						>
 							+
 						</button>
 					</div>
@@ -151,7 +154,7 @@ export default function Layout({ children, ual }) {
 								</div>
 								<p className="font-cinzel text-center">Inventory</p>
 							</Link>
-							<button className="relative disabled">
+							<button title="Coming soon" className="relative disabled">
 								<div className="relative">
 									<Image
 										src={dockIconBg}
@@ -166,7 +169,7 @@ export default function Layout({ children, ual }) {
 								</div>
 								<p className="font-cinzel text-center">Craft</p>
 							</button>
-							<button className="relative disabled">
+							<button title="Coming soon" className="relative disabled">
 								<div className="relative">
 									<Image
 										src={dockIconBg}

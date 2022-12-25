@@ -54,7 +54,7 @@ html {
 @tailwind utilities;
 
 .disabled {
-	@apply cursor-not-allowed opacity-50 pointer-events-none;
+	@apply cursor-not-allowed opacity-70 /*pointer-events-none*/;
 }
 
 .scrollbar::-webkit-scrollbar {
