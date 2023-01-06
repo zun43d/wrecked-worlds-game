@@ -7,6 +7,7 @@ import useSWR from 'swr'
 import fetcher from '../utils/fetcher'
 import { CgArrowsExchange } from 'react-icons/cg'
 import { GiStoneCrafting, GiWarPick } from 'react-icons/gi'
+import { GrMultiple } from 'react-icons/gr'
 import { SiCodesandbox } from 'react-icons/si'
 import { MdOutlineLeaderboard } from 'react-icons/md'
 
@@ -20,16 +21,17 @@ export default function Layout({ children, ual }) {
 	const router = useRouter()
 	const userName = ual.activeUser?.accountName
 
-	const { data: userBal, error } = useSWR(
-		`/api/user/balance?wallet=${userName}`,
-		fetcher
-	)
+	const userBal = null
+	// const { data: userBal, error } = useSWR(
+	// 	`/api/user/balance?wallet=${userName}`,
+	// 	fetcher
+	// )
 
 	const bal = {
-		wtm: userBal ? userBal[0].split(' ')[0] : '0.0000 WTM',
-		iron: userBal ? userBal[1].split(' ')[0] : '0.0000 IRON',
-		dm: userBal ? userBal[2].split(' ')[0] : '0.0000 DM',
-		wrm: userBal ? userBal[3].split(' ')[0] : '0.0000 WRM',
+		wtm: userBal ? userBal[0].split(' ')[0] : '0.0000',
+		iron: userBal ? userBal[1].split(' ')[0] : '0.0000',
+		dm: userBal ? userBal[2].split(' ')[0] : '0.0000',
+		wrm: userBal ? userBal[3].split(' ')[0] : '0.0000',
 	}
 
 	const handleLogout = () => {
@@ -113,8 +115,9 @@ export default function Layout({ children, ual }) {
 							</div>
 						</div>
 						<Link
+							title="Coming soon"
 							href="/dashboard/exchange"
-							className="absolute top-1/2 -translate-y-1/2 right-8 bg-orange-500 px-1 py-1 border border-orange-400"
+							className="disabled absolute top-1/2 -translate-y-1/2 right-8 bg-orange-500 px-1 py-1 border border-orange-400"
 						>
 							<CgArrowsExchange className="text-white" size={25} />
 						</Link>
@@ -124,7 +127,11 @@ export default function Layout({ children, ual }) {
 					<div className="absolute bottom-14 left-0 right-0 flex justify-center items-center">
 						<Image src={dockArea} alt="Dock Area" placeholder="blur" />
 						<div className="absolute left-1/2 -translate-x-1/2 flex gap-9">
-							<Link href="/dashboard/mine" className="">
+							<Link
+								href="/dashboard/mine"
+								className="disabled"
+								title="Coming soon"
+							>
 								<div className="relative">
 									<Image
 										src={dockIconBg}
@@ -153,6 +160,21 @@ export default function Layout({ children, ual }) {
 									/>
 								</div>
 								<p className="font-cinzel text-center">Inventory</p>
+							</Link>
+							<Link href="/dashboard/blend" className="">
+								<div className="relative">
+									<Image
+										src={dockIconBg}
+										alt="Dock Icon Background"
+										placeholder="blur"
+										className="mx-auto"
+									/>
+									<GrMultiple
+										size={32}
+										className="absolute text-slate-900 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 stroke-slate-900"
+									/>
+								</div>
+								<p className="font-cinzel text-center">Blend</p>
 							</Link>
 							<button title="Coming soon" className="relative disabled">
 								<div className="relative">

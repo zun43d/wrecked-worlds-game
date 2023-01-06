@@ -5,7 +5,7 @@ import Window from '../../components/Window'
 import fetcher from '../../utils/fetcher'
 import exchange from '../../lib/exchange'
 
-export default function Inventory({ ual }) {
+export default function Exchange({ ual }) {
 	const [resources, setResources] = useState([0.0, 0.0, 0.0])
 	const [withdrawWtm, setWithdrawWtm] = useState(0.0)
 

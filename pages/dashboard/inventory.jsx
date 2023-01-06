@@ -35,7 +35,7 @@ export default function Inventory({ ual }) {
 	return (
 		<Layout ual={ual}>
 			<Window windowName="Inventory">
-				<div className="my-10 mx-16 py-5 h-[580px] overflow-x-hidden overflow-y-scroll scrollbar">
+				<div className="py-5 max-h-[580px]">
 					<div className="grid grid-cols-4 gap-4 w-full h-full">
 						{inventory.length > 0 ? (
 							inventory.map((item) => (
