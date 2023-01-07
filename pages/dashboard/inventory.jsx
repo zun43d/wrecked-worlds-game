@@ -35,7 +35,7 @@ export default function Inventory({ ual }) {
 	return (
 		<Layout ual={ual}>
 			<Window windowName="Inventory">
-				<div className="py-5 max-h-[580px]">
+				<div className="py-5">
 					<div className="grid grid-cols-4 gap-4 w-full h-full">
 						{inventory.length > 0 ? (
 							inventory.map((item) => (
@@ -54,18 +54,18 @@ export default function Inventory({ ual }) {
 										{/* <p className="text-white text-center mt-3">
 											{item.data.name ? item.data.name : 'No Name'}
 										</p> */}
-										<div className="flex items-center justify-between w-full">
+										<div className="flex items-center justify-center w-full">
 											<p className="text-white font-semibold text-center">
 												{item.data.name ? item.data.name : 'No Name'}
 											</p>
-											{item.schema.schema_name !== 'lands' && (
+											{/* {item.schema.schema_name !== 'lands' && (
 												<button
 													className="btn-colored rounded-lg py-2 px-4 text-sm"
 													onClick={() => handleStake(item.asset_id)}
 												>
 													Stake
 												</button>
-											)}
+											)} */}
 										</div>
 									</div>
 								</div>

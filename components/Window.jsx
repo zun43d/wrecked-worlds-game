@@ -26,7 +26,7 @@ export default function Window({ children, windowName }) {
 					className="backdrop-blur-lg max-w-[1200px]"
 				/>
 
-				<div className="absolute top-10 left-0 right-0 my-10 mx-16  overflow-x-hidden overflow-y-scroll scrollbar">
+				<div className="absolute top-10 left-0 right-0 my-10 mx-16 overflow-x-hidden overflow-y-scroll scrollbar  max-h-[580px]">
 					{children}
 				</div>
 			</div>
