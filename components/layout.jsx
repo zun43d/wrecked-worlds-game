@@ -114,21 +114,23 @@ export default function Layout({ children, ual }) {
 								</p>
 							</div>
 						</div>
-						<Link
+						<button
+							disabled={true}
 							title="Coming soon"
-							href="/dashboard/exchange"
+							// href="/dashboard/exchange"
 							className="disabled absolute top-1/2 -translate-y-1/2 right-8 bg-orange-500 px-1 py-1 border border-orange-400"
 						>
 							<CgArrowsExchange className="text-white" size={25} />
-						</Link>
+						</button>
 					</div>
 
 					{/* Bottom dock */}
 					<div className="absolute bottom-14 left-0 right-0 flex justify-center items-center">
 						<Image src={dockArea} alt="Dock Area" placeholder="blur" />
 						<div className="absolute left-1/2 -translate-x-1/2 flex gap-9">
-							<Link
-								href="/dashboard/mine"
+							<button
+								disabled={true}
+								// href="/dashboard/mine"
 								className="disabled"
 								title="Coming soon"
 							>
@@ -145,7 +147,7 @@ export default function Layout({ children, ual }) {
 									/>
 								</div>
 								<p className="font-cinzel text-center">Mine</p>
-							</Link>
+							</button>
 							<Link href="/dashboard/inventory" className="">
 								<div className="relative">
 									<Image
