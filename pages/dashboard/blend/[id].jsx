@@ -167,9 +167,9 @@ export default function BlendDetails({ ual }) {
 							))}
 						<button
 							className={`${
-								selectedCard !== blend?.mixture.length && 'disabled'
+								selectedCard.length !== blend?.mixture.length && 'disabled'
 							} border border-orange-500 bg-amber-800/80 hover:bg-amber-800 px-6 py-2 cursor-pointer`}
-							disabled={selectedCard !== blend?.mixture.length}
+							disabled={selectedCard.length !== blend?.mixture.length}
 							onClick={() => startBlend(ual?.activeUser, selectedCard, id)}
 						>
 							Blend
