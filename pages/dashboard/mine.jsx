@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import useSWR, { useSWRConfig } from 'swr'
+import { Interval, DateTime } from 'luxon'
 import { BsPlusCircleDotted } from 'react-icons/bs'
 import { GiWarPick } from 'react-icons/gi'
 import fetcher from '../../utils/fetcher'
@@ -19,6 +20,10 @@ export default function Mine({ ual }) {
 	const [toolModalIsOpen, setToolModalIsOpen] = useState(false)
 	const [currentTool, setCurrentTool] = useState(null)
 
+	const [cooldown, setCooldown] = useState(null)
+	const [isLoading, setIsLoading] = useState(false)
+	const intervalId = useRef(null)
+
 	const [isMining, setIsMining] = useState(false)
 
 	const { data: stakedLands } = useSWR('/api/staked-lands', fetcher)
@@ -26,6 +31,59 @@ export default function Mine({ ual }) {
 		`/api/user/staked-tools?wallet=${ual.activeUser?.accountName}`,
 		fetcher
 	)
+
+	const countdown = async (time) => {
+		// calculate the time remaining until the end time
+		const timeRemaining = Interval.fromDateTimes(
+			DateTime.utc(),
+			DateTime.fromJSDate(new Date(time), { zone: 'utc' })
+		).toDuration(['hours', 'minutes', 'seconds', 'milliseconds'])
+
+		const remain = {
+			hours: timeRemaining.hours,
+			minutes: timeRemaining.minutes,
+			seconds: timeRemaining.seconds,
+		}
+
+		setCooldown(remain)
+		setIsLoading(false)
+
+		// update the UI with the time remaining
+		console.log(`Time remaining: ${timeRemaining.seconds} seconds`)
+
+		if (!timeRemaining.isValid || timeRemaining.seconds <= 0) {
+			clearInterval(intervalId.current)
+			setCooldown(null)
+			console.log("Time's Up!")
+		}
+	}
+
+	useEffect(() => {
+		if (currentTool) {
+			setIsLoading(true)
+			fetch(
+				`/api/tool-cooldown?wallet=${ual.activeUser?.accountName}&toolId=${currentTool?.asset_id}`
+			)
+				.then((res) => res.json())
+				.then((res) => {
+					const isValidDurantion = Interval.fromDateTimes(
+						DateTime.utc(),
+						new Date(res)
+					).toDuration().isValid
+
+					if (isValidDurantion) {
+						intervalId.current = setInterval(() => countdown(res), 1000)
+						return
+					}
+					setIsLoading(false)
+				})
+		}
+
+		return () => {
+			clearInterval(intervalId.current)
+			setCooldown(null)
+		}
+	}, [currentTool, isMining])
 
 	const handleMine = async (activeUser, landAssetId, toolAssetId) => {
 		setIsMining(true)
@@ -61,7 +119,7 @@ export default function Mine({ ual }) {
 	return (
 		<Layout ual={ual}>
 			<Window windowName="Mining">
-				<div className="flex flex-col items-center justify-center my-16">
+				<div className="flex flex-col items-center justify-center my-16 transition-all duration-200">
 					<div className="flex items-center justify-cente gap-8 mb-10">
 						{currentLand ? (
 							<div
@@ -129,21 +187,37 @@ export default function Mine({ ual }) {
 						)}
 					</div>
 
-					<button
-						className={`${!(currentLand && currentTool) && 'disabled'} ${
-							!isMining && 'border'
-						} border-orange-400 bg-amber-800/80 hover:bg-amber-800 px-6 py-2 cursor-pointer`}
-						disabled={!(currentLand && currentTool) || isMining}
-						onClick={() =>
-							handleMine(
-								ual.activeUser,
-								currentLand.asset_id,
-								currentTool.asset_id
-							)
-						}
-					>
-						{isMining ? 'Mining...' : 'Start Mine'}
-					</button>
+					{isLoading ? (
+						<div className="animate-pulse rounded-md bg-amber-900/70 px-6 py-2">
+							Fetching...
+						</div>
+					) : cooldown ? (
+						<div className="flex flex-col justify-center items-center bg-amber-900/70 rounded-md px-3 pt-3 pb-2 w-28">
+							<span className="font-sans text-xs font-semibold text-orange-300 ">
+								NEXT MINE IN
+							</span>
+							<span className="text-lg font-merriweather">
+								{cooldown.hours || '00'}:{cooldown.minutes || '00'}:
+								{cooldown.seconds || '00'}
+							</span>
+						</div>
+					) : (
+						<button
+							className={`${!(currentLand && currentTool) && 'disabled'} ${
+								!isMining && 'border'
+							} border-orange-400 bg-amber-800/80 hover:bg-amber-800 px-6 py-2 cursor-pointer`}
+							disabled={!(currentLand && currentTool) || isMining}
+							onClick={() =>
+								handleMine(
+									ual.activeUser,
+									currentLand.asset_id,
+									currentTool.asset_id
+								)
+							}
+						>
+							{isMining ? 'Mining...' : 'Start Mine'}
+						</button>
+					)}
 				</div>
 			</Window>
 
