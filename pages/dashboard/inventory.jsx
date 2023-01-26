@@ -58,14 +58,14 @@ export default function Inventory({ ual }) {
 											<p className="text-white font-semibold text-center">
 												{item.data.name ? item.data.name : 'No Name'}
 											</p>
-											{/* {item.schema.schema_name !== 'lands' && (
+											{item.schema.schema_name === 'tools' && (
 												<button
 													className="btn-colored rounded-lg py-2 px-4 text-sm"
 													onClick={() => handleStake(item.asset_id)}
 												>
 													Stake
 												</button>
-											)} */}
+											)}
 										</div>
 									</div>
 								</div>
