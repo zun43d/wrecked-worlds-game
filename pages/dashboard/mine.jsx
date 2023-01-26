@@ -97,7 +97,7 @@ export default function Mine({ ual }) {
 
 				res.transactionId &&
 					alert(
-						'\nMining Success!!\n\nReceived Rewards\n- 150.0000 IRON\n- 50.0000 DM\n- 10.0000 WRM'
+						'\nMining Success!!\n\nRewards Received!\n'
 					)
 			})
 			.catch((err) => {
