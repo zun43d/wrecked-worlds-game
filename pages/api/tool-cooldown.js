@@ -10,7 +10,7 @@ export default async function handler(req, res) {
 
 		const { rows: tools } = await rpc.get_table_rows({
 			json: true,
-			code: 'wreckminings',
+			code: 'wrecktmining',
 			scope: wallet,
 			table: 'tools',
 			key_type: 'i64',

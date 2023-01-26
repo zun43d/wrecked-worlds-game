@@ -119,7 +119,7 @@ export default function Mine({ ual }) {
 	return (
 		<Layout ual={ual}>
 			<Window windowName="Mining">
-				<div className="flex flex-col items-center justify-center my-16 transition-all duration-200">
+				<div className="flex flex-col items-center justify-center my-12 transition-all duration-200">
 					<div className="flex items-center justify-cente gap-8 mb-10">
 						{currentLand ? (
 							<div

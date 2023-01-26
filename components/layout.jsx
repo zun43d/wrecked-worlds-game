@@ -21,11 +21,10 @@ export default function Layout({ children, ual }) {
 	const router = useRouter()
 	const userName = ual.activeUser?.accountName
 
-	const userBal = null
-	// const { data: userBal, error } = useSWR(
-	// 	`/api/user/balance?wallet=${userName}`,
-	// 	fetcher
-	// )
+	const { data: userBal, error } = useSWR(
+		`/api/user/balance?wallet=${userName}`,
+		fetcher
+	)
 
 	const bal = {
 		wtm: userBal ? userBal[0].split(' ')[0] : '0.0000',
@@ -114,26 +113,19 @@ export default function Layout({ children, ual }) {
 								</p>
 							</div>
 						</div>
-						<button
-							disabled={true}
-							title="Coming soon"
-							// href="/dashboard/exchange"
-							className="disabled absolute top-1/2 -translate-y-1/2 right-8 bg-orange-500 px-1 py-1 border border-orange-400"
+						<Link
+							href="/dashboard/exchange"
+							className="absolute top-1/2 -translate-y-1/2 right-8 bg-orange-500 px-1 py-1 border border-orange-400"
 						>
 							<CgArrowsExchange className="text-white" size={25} />
-						</button>
+						</Link>
 					</div>
 
 					{/* Bottom dock */}
 					<div className="absolute bottom-14 left-0 right-0 flex justify-center items-center">
 						<Image src={dockArea} alt="Dock Area" placeholder="blur" />
 						<div className="absolute left-1/2 -translate-x-1/2 flex gap-9">
-							<button
-								disabled={true}
-								// href="/dashboard/mine"
-								className="disabled"
-								title="Coming soon"
-							>
+							<Link href="/dashboard/mine" className="">
 								<div className="relative">
 									<Image
 										src={dockIconBg}
@@ -147,7 +139,7 @@ export default function Layout({ children, ual }) {
 									/>
 								</div>
 								<p className="font-cinzel text-center">Mine</p>
-							</button>
+							</Link>
 							<Link href="/dashboard/inventory" className="">
 								<div className="relative">
 									<Image
