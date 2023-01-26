@@ -97,7 +97,7 @@ export default function Mine({ ual }) {
 
 				res.transactionId &&
 					alert(
-						'\nMining Success!!\n\nRewards Received!\n'
+						'\nMining Success!!\nRewards Received!\n'
 					)
 			})
 			.catch((err) => {
