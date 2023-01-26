@@ -41,7 +41,7 @@ export default async function handler(req, res) {
 
 		const { rows: stakedAssets } = await rpc.get_table_rows({
 			json: true,
-			code: 'wreckminings',
+			code: 'wrecktmining',
 			scope: wallet,
 			table: 'tools',
 			limit: 50,

@@ -16,8 +16,8 @@ export default async function handler(req, res) {
 			rpc.get_currency_balance('wrecktiumtok', wallet, 'WTM'),
 			rpc.get_table_rows({
 				json: true,
-				code: 'wreckminings',
-				scope: 'wreckminings',
+				code: 'wrecktmining',
+				scope: 'wrecktmining',
 				table: 'wallets',
 				key_type: 'i64',
 				index_position: 1,
