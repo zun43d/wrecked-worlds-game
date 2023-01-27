@@ -30,8 +30,9 @@ export default function Exchange({ ual }) {
 
 	const handleWithdrawAmnt = (amount) => {
 		if (amount > +calcMaxWtm()) return setMaxWtm()
-		setWithdrawWtm(amount)
-		calcCost(amount)
+
+		setWithdrawWtm(Math.floor(amount))
+		calcCost(Math.floor(amount))
 	}
 
 	const calcCost = (amount) => {
@@ -45,14 +46,14 @@ export default function Exchange({ ual }) {
 	}
 
 	const setMaxWtm = () => {
-		const wtm = toFixed(bal.iron.replace(' IRON', '') / 150, 4)
+		const wtm = Math.floor(bal.iron.replace(' IRON', '') / 150)
 
 		setWithdrawWtm(wtm)
 		calcCost(wtm)
 	}
 
 	const calcMaxWtm = () => {
-		return toFixed(bal.iron.replace(' IRON', '') / 150, 4)
+		return Math.floor(bal.iron.replace(' IRON', '') / 150)
 	}
 
 	const handleExchange = async () => {

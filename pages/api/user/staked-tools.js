@@ -48,6 +48,7 @@ export default async function handler(req, res) {
 			page: 1,
 		})
 
+		if (stakedAssets.length === 0) return res.status(200).json([])
 		const stakedAssetIds = stakedAssets.map((tool) => tool.asset_id).join('%2C')
 
 		const { data: stakedTools } =
